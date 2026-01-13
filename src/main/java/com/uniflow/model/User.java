@@ -34,6 +34,7 @@ public class User {
     private RoleEnum role;
 
     @Column(nullable = false)
+    @Builder.Default
     private Boolean enabled = true;
 
     // One-to-one relationships handled in Student/Teacher entities

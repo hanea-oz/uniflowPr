@@ -41,3 +41,21 @@ logs/
 
 ### Application ###
 application-local.properties
+
+### Database ###
+demo-data*.sql
+*.sql
+fix-passwords.sql
+users-arabes.sql
+simple-admin.sql
+
+### Scripts ###
+load-demo-data.bat
+run.cmd
+
+### Testing ###
+test-auth.html
+
+### Environment ###
+.env
+.env.local

@@ -45,5 +45,6 @@ public class Teacher {
 
     @Column(name = "workload_hours", nullable = false)
     @Min(value = 0, message = "Workload hours must be non-negative")
+    @Builder.Default
     private Integer workloadHours = 0;
 }

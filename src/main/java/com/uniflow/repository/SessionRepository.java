@@ -17,6 +17,11 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
     List<Session> findByRoomId(Long roomId);
     List<Session> findByTimeslotId(Long timeslotId);
     
+    // Méthodes pour la détection de conflits
+    List<Session> findByTeacherIdAndTimeslotId(Long teacherId, Long timeslotId);
+    List<Session> findByGroupIdAndTimeslotId(Long groupId, Long timeslotId);
+    List<Session> findByRoomIdAndTimeslotId(Long roomId, Long timeslotId);
+    
     @Query("SELECT s FROM Session s WHERE s.group.id = :groupId ORDER BY s.timeslot.dayOfWeek, s.timeslot.startTime")
     List<Session> findByGroupIdOrderByTimeslot(@Param("groupId") Long groupId);
     

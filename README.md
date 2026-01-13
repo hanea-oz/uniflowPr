@@ -1,44 +1,65 @@
-# University Management System (UNIFLOW)
+# University Management System
 
-A comprehensive web application for managing university operations including students, teachers, modules, timetables, and student evaluation.
+A comprehensive web application for managing university operations including students, teachers, courses, sessions, and grading systems.
 
-## 🎓 Features
+## Features
 
-### Admin Features
-- **User Management**: Create, update, and delete students and teachers
-- **Group Management**: Organize students into groups by program and level
-- **Module Management**: Define modules with responsible teachers
-- **Module Assignment**: Assign modules to specific groups
-- **Room Management**: Manage classroom inventory
-- **Timetable Management**: Create weekly recurring timetables
-  - Define timeslots (day, start time, end time)
-  - Create sessions with conflict detection
-  - Automatic validation (no double-booking of rooms, teachers, or groups)
-- **Complete CRUD Operations**: Full control over all entities
+- **User Management**: Admin, Teacher, and Student role-based access control
+- **Academic Management**: Courses, groups, sessions, and scheduling
+- **Conflict Detection**: Advanced conflict resolution for scheduling
+- **Grading System**: Complete grade management for teachers and students
+- **Responsive UI**: Clean, modern interface using Thymeleaf and Bootstrap
 
-### Teacher Features
-- **Dashboard**: View assigned modules and upcoming sessions
-- **Module View**: Access all modules where they are responsible
-- **Timetable View**: Personal weekly schedule
-- **Grade Management**: 
-  - Select module
-  - View enrolled students
-  - Create/update grades (Lab, Exam, Project, Participation, Final)
-  - Provide feedback
+## Technology Stack
 
-### Student Features
-- **Dashboard**: Personal profile and group information
-- **Timetable View**: Weekly class schedule based on group
-- **Grade View**: View all grades and feedback from teachers
-
-## 🛠️ Technology Stack
-
-- **Backend**: Java 17, Spring Boot 3.2.1
-- **Web Framework**: Spring MVC + Thymeleaf
-- **Data Access**: Spring Data JPA
-- **Database**: PostgreSQL (Railway)
-- **Security**: Spring Security with role-based access control
+- **Backend**: Spring Boot 3.2.1, Spring Security, Spring Data JPA
+- **Database**: PostgreSQL with Hibernate ORM
+- **Frontend**: Thymeleaf, Bootstrap, HTML5
 - **Build Tool**: Maven
+- **Java Version**: 17
+## Quick Start
+
+### Prerequisites
+
+- Java 17 or higher
+- PostgreSQL database
+- Maven 3.6+
+
+### Configuration
+
+1. Copy `src/main/resources/application-example.properties` to `application-local.properties`
+2. Fill in your database credentials:
+   ```properties
+   spring.datasource.url=jdbc:postgresql://your-host:port/your-database
+   spring.datasource.username=your-username
+   spring.datasource.password=your-password
+   ```
+
+### Environment Variables
+
+For production deployment, use environment variables:
+
+```bash
+DATABASE_URL=jdbc:postgresql://host:port/database
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+DDL_AUTO=none
+LOG_LEVEL=INFO
+SHOW_SQL=false
+PORT=8080
+```
+
+### Running the Application
+
+```bash
+# Using Maven Wrapper
+./mvnw spring-boot:run
+
+# Or with environment profile
+SPRING_PROFILES_ACTIVE=local ./mvnw spring-boot:run
+```
+
+The application will be available at `http://localhost:8080`
 - **UI Framework**: Bootstrap 5 + Bootstrap Icons
 
 ## 📊 Database Schema
