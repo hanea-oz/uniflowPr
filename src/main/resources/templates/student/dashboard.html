@@ -40,13 +40,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="session : ${sessions}">
-                                <td th:text="${session.timeslot.dayOfWeek}">MONDAY</td>
-                                <td th:text="${session.timeslot.timeRange}">08:00-10:00</td>
-                                <td th:text="${session.module.name}">Module Name</td>
-                                <td><span class="badge bg-primary" th:text="${session.type}">LECTURE</span></td>
-                                <td th:text="${session.room.name}">A101</td>
-                                <td th:text="${session.teacher.firstName + ' ' + session.teacher.lastName}">Teacher</td>
+                            <tr th:each="scheduledSession : ${sessions}">
+                                <td th:text="${scheduledSession.timeslot?.dayOfWeek ?: 'N/A'}">MONDAY</td>
+                                <td th:text="${scheduledSession.timeslot != null ? (scheduledSession.timeslot.startTime + ' - ' + scheduledSession.timeslot.endTime) : 'N/A'}">08:00-10:00</td>
+                                <td th:text="${scheduledSession.module?.name ?: 'N/A'}">Module Name</td>
+                                <td><span class="badge bg-primary" th:text="${scheduledSession.type ?: 'N/A'}">LECTURE</span></td>
+                                <td th:text="${scheduledSession.room?.name ?: 'N/A'}">A101</td>
+                                <td th:text="${scheduledSession.teacher != null ? (scheduledSession.teacher.firstName + ' ' + scheduledSession.teacher.lastName) : 'N/A'}">Teacher</td>
                             </tr>
                             <tr th:if="${#lists.isEmpty(sessions)}">
                                 <td colspan="6" class="text-center text-muted">No sessions scheduled</td>

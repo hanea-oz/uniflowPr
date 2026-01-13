@@ -28,17 +28,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="session : ${sessions}">
-                                <td th:text="${session.timeslot.dayOfWeek}">MONDAY</td>
-                                <td th:text="${session.timeslot.timeRange}">08:00-10:00</td>
-                                <td><strong th:text="${session.module.name}">Module Name</strong></td>
+                            <tr th:each="scheduledSession : ${sessions}">
+                                <td th:text="${scheduledSession.timeslot.dayOfWeek}">MONDAY</td>
+                                <td th:text="${scheduledSession.timeslot.timeRange}">08:00-10:00</td>
+                                <td><strong th:text="${scheduledSession.module.name}">Module Name</strong></td>
                                 <td>
                                     <span class="badge" 
-                                          th:classappend="${session.type == T(com.uniflow.model.enums.SessionTypeEnum).LECTURE ? 'bg-primary' : session.type == T(com.uniflow.model.enums.SessionTypeEnum).TD ? 'bg-success' : 'bg-info'}"
-                                          th:text="${session.type}">LECTURE</span>
+                                          th:classappend="${scheduledSession.type == T(com.uniflow.model.enums.SessionTypeEnum).LECTURE ? 'bg-primary' : scheduledSession.type == T(com.uniflow.model.enums.SessionTypeEnum).TD ? 'bg-success' : 'bg-info'}"
+                                          th:text="${scheduledSession.type}">LECTURE</span>
                                 </td>
-                                <td th:text="${session.room.name}">A101</td>
-                                <td th:text="${session.teacher.firstName + ' ' + session.teacher.lastName}">Teacher Name</td>
+                                <td th:text="${scheduledSession.room.name}">A101</td>
+                                <td th:text="${scheduledSession.teacher.firstName + ' ' + scheduledSession.teacher.lastName}">Teacher Name</td>
                             </tr>
                             <tr th:if="${sessions == null || #lists.isEmpty(sessions)}">
                                 <td colspan="6" class="text-center text-muted">
