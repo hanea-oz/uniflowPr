@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::menu}, ~{::content})}">
+<head>
+    <title>My Sessions</title>
+</head>
+<body>
+    <ul th:fragment="menu" class="nav flex-column">
+        <li class="nav-item"><a class="nav-link" th:href="@{/teacher/dashboard}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/teacher/modules}"><i class="bi bi-book"></i> My Modules</a></li>
+        <li class="nav-item"><a class="nav-link active" th:href="@{/teacher/sessions}"><i class="bi bi-calendar3"></i> My Timetable</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/teacher/grades}"><i class="bi bi-clipboard-check"></i> Manage Grades</a></li>
+    </ul>
+
+    <div th:fragment="content">
+        <h1 class="mb-4">My Weekly Timetable</h1>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Day</th>
+                                <th>Time</th>
+                                <th>Module</th>
+                                <th>Type</th>
+                                <th>Group</th>
+                                <th>Room</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="session : ${sessions}">
+                                <td th:text="${session.timeslot.dayOfWeek}">MONDAY</td>
+                                <td th:text="${session.timeslot.timeRange}">08:00-10:00</td>
+                                <td><strong th:text="${session.module.name}">Module Name</strong></td>
+                                <td>
+                                    <span class="badge" 
+                                          th:classappend="${session.type == T(com.uniflow.model.enums.SessionTypeEnum).LECTURE ? 'bg-primary' : session.type == T(com.uniflow.model.enums.SessionTypeEnum).TD ? 'bg-success' : 'bg-info'}"
+                                          th:text="${session.type}">LECTURE</span>
+                                </td>
+                                <td th:text="${session.group.name}">Group A</td>
+                                <td th:text="${session.room.name}">A101</td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(sessions)}">
+                                <td colspan="6" class="text-center text-muted">No sessions scheduled</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

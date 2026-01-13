@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::menu}, ~{::content})}">
+<head>
+    <title>My Modules</title>
+</head>
+<body>
+    <ul th:fragment="menu" class="nav flex-column">
+        <li class="nav-item"><a class="nav-link" th:href="@{/teacher/dashboard}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link active" th:href="@{/teacher/modules}"><i class="bi bi-book"></i> My Modules</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/teacher/sessions}"><i class="bi bi-calendar3"></i> My Timetable</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/teacher/grades}"><i class="bi bi-clipboard-check"></i> Manage Grades</a></li>
+    </ul>
+
+    <div th:fragment="content">
+        <h1 class="mb-4">My Modules</h1>
+
+        <div class="row g-4">
+            <div class="col-md-6" th:each="module : ${modules}">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0" th:text="${module.name}">Module Name</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Program:</strong> <span th:text="${module.program}">Computer Science</span></p>
+                        <p><strong>Semester:</strong> <span th:text="${module.semester}">5</span></p>
+                        <p><strong>Volume:</strong> <span th:text="${module.volumeHours}">48</span> hours</p>
+                        <p><strong>Assigned Groups:</strong></p>
+                        <ul>
+                            <li th:each="group : ${module.assignedGroups}" th:text="${group.name}">Group A</li>
+                            <li th:if="${#lists.isEmpty(module.assignedGroups)}" class="text-muted">No groups assigned</li>
+                        </ul>
+                        <p th:if="${module.requiredSkills}"><strong>Required Skills:</strong><br>
+                            <small th:text="${module.requiredSkills}">Skills</small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${#lists.isEmpty(modules)}" class="col-12">
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> You are not responsible for any modules yet.
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

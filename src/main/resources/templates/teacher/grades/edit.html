@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::menu}, ~{::content})}">
+<head>
+    <title>Edit Grade</title>
+</head>
+<body>
+    <ul th:fragment="menu" class="nav flex-column">
+        <li class="nav-item"><a class="nav-link" th:href="@{/teacher/dashboard}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/teacher/modules}"><i class="bi bi-book"></i> My Modules</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/teacher/sessions}"><i class="bi bi-calendar3"></i> My Timetable</a></li>
+        <li class="nav-item"><a class="nav-link active" th:href="@{/teacher/grades}"><i class="bi bi-clipboard-check"></i> Manage Grades</a></li>
+    </ul>
+
+    <div th:fragment="content">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/teacher/grades}">Modules</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/teacher/grades/module/{id}(id=${enrollment.module.id})}" th:text="${enrollment.module.name}">Module</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Edit Grade</li>
+            </ol>
+        </nav>
+
+        <h1 class="mb-4">Edit Grade</h1>
+        <h5 class="text-muted mb-4">
+            Student: <strong th:text="${enrollment.student.firstName + ' ' + enrollment.student.lastName}">Student Name</strong><br>
+            Module: <strong th:text="${enrollment.module.name}">Module Name</strong>
+        </h5>
+
+        <div class="card">
+            <div class="card-body">
+                <form th:action="@{/teacher/grades/edit/{id}(id=${enrollment.id})}" method="post">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="labGrade" class="form-label">Lab Grade (0-20)</label>
+                            <input type="number" step="0.5" min="0" max="20" class="form-control" 
+                                   id="labGrade" name="labGrade" 
+                                   th:value="${grade != null ? grade.labGrade : null}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="examGrade" class="form-label">Exam Grade (0-20)</label>
+                            <input type="number" step="0.5" min="0" max="20" class="form-control" 
+                                   id="examGrade" name="examGrade" 
+                                   th:value="${grade != null ? grade.examGrade : null}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="projectGrade" class="form-label">Project Grade (0-20)</label>
+                            <input type="number" step="0.5" min="0" max="20" class="form-control" 
+                                   id="projectGrade" name="projectGrade" 
+                                   th:value="${grade != null ? grade.projectGrade : null}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="participationGrade" class="form-label">Participation Grade (0-20)</label>
+                            <input type="number" step="0.5" min="0" max="20" class="form-control" 
+                                   id="participationGrade" name="participationGrade" 
+                                   th:value="${grade != null ? grade.participationGrade : null}">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="finalGrade" class="form-label">Final Grade (0-20) *</label>
+                        <input type="number" step="0.5" min="0" max="20" class="form-control" 
+                               id="finalGrade" name="finalGrade" 
+                               th:value="${grade != null ? grade.finalGrade : null}">
+                        <small class="text-muted">This is the overall grade for the student</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="feedback" class="form-label">Feedback</label>
+                        <textarea class="form-control" id="feedback" name="feedback" rows="4" 
+                                  th:text="${grade != null ? grade.feedback : ''}"></textarea>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Save Grade</button>
+                        <a th:href="@{/teacher/grades/module/{id}(id=${enrollment.module.id})}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

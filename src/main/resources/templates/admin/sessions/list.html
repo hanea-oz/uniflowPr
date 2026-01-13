@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::menu}, ~{::content})}">
+<head>
+    <title>Sessions Management</title>
+</head>
+<body>
+    <ul th:fragment="menu" class="nav flex-column">
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/dashboard}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/students}"><i class="bi bi-people"></i> Students</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/teachers}"><i class="bi bi-person-badge"></i> Teachers</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/groups}"><i class="bi bi-collection"></i> Groups</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/modules}"><i class="bi bi-book"></i> Modules</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/rooms}"><i class="bi bi-door-open"></i> Rooms</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/timeslots}"><i class="bi bi-clock"></i> Timeslots</a></li>
+        <li class="nav-item"><a class="nav-link active" th:href="@{/admin/sessions}"><i class="bi bi-calendar3"></i> Sessions</a></li>
+    </ul>
+
+    <div th:fragment="content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="mb-0"><i class="bi bi-calendar3"></i> Sessions Management</h1>
+            <div class="text-muted">
+                Total: <span class="fw-bold" th:text="${sessions != null ? #lists.size(sessions) : 0}">0</span> sessions
+            </div>
+        </div>
+        
+        <!-- Success/Error Messages -->
+        <div th:if="${successMessage != null && !#strings.isEmpty(successMessage)}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle"></i> <span th:text="${successMessage}">Success message</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${errorMessage != null && !#strings.isEmpty(errorMessage)}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle"></i> <span th:text="${errorMessage}">Error message</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="mb-4">
+            <div class="d-flex gap-2">
+                <a th:href="@{/admin/sessions/create}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Create New Session
+                </a>
+                <button type="button" class="btn btn-outline-secondary" onclick="window.location.reload()">
+                    <i class="bi bi-arrow-clockwise"></i> Refresh
+                </button>
+                <div class="dropdown">
+                    <button class="btn btn-outline-info dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-filter"></i> Filter
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#" onclick="filterByType('all')">All Sessions</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="filterByType('LECTURE')">Lectures Only</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="filterByType('TUTORIAL')">Tutorials Only</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="filterByType('LAB')">Labs Only</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sessions Table -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0"><i class="bi bi-table"></i> Sessions List</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th class="text-center">#</th>
+                                <th>Module</th>
+                                <th>Teacher</th>
+                                <th>Group</th>
+                                <th>Room</th>
+                                <th>Schedule</th>
+                                <th>Type</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        </thead>
+                        <tbody>
+                            <!-- Empty State -->
+                            <tr th:if="${sessions == null || #lists.isEmpty(sessions)}">
+                                <td colspan="8" class="text-center py-5">
+                                    <div class="text-muted">
+                                        <i class="bi bi-calendar-x display-1"></i>
+                                        <h5 class="mt-3">No Sessions Found</h5>
+                                        <p class="mb-3">There are no sessions configured in the system yet.</p>
+                                        <a th:href="@{/admin/sessions/create}" class="btn btn-primary">
+                                            <i class="bi bi-plus-circle"></i> Create First Session
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Session Rows -->
+                            <tr th:if="${sessions != null}" th:each="sessionItem, iterStat : ${sessions}" class="session-row">
+                                <td class="text-center align-middle">
+                                    <span class="badge bg-secondary" th:text="${sessionItem != null && sessionItem.id != null ? sessionItem.id : 'N/A'}">1</span>
+                                </td>
+                                
+                                <td class="align-middle">
+                                    <div>
+                                        <strong th:text="${sessionItem != null && sessionItem.module != null && sessionItem.module.name != null ? sessionItem.module.name : 'Unknown Module'}">Module Name</strong>
+                                        <br>
+                                        <small class="text-muted">
+                                            <span th:text="${sessionItem != null && sessionItem.module != null && sessionItem.module.program != null ? sessionItem.module.program : 'N/A'}">Program</span>
+                                            • Sem <span th:text="${sessionItem != null && sessionItem.module != null && sessionItem.module.semester != null ? sessionItem.module.semester : 'N/A'}">1</span>
+                                        </small>
+                                    </div>
+                                </td>
+                                
+                                <td class="align-middle">
+                                    <div th:if="${sessionItem != null && sessionItem.teacher != null}">
+                                        <strong th:text="${(sessionItem.teacher.firstName != null ? sessionItem.teacher.firstName : '') + ' ' + (sessionItem.teacher.lastName != null ? sessionItem.teacher.lastName : '')}">Teacher Name</strong>
+                                        <br>
+                                        <small class="text-muted" th:text="${sessionItem.teacher.grade != null ? sessionItem.teacher.grade : 'Teacher'}">Grade</small>
+                                    </div>
+                                    <div th:unless="${sessionItem != null && sessionItem.teacher != null}" class="text-muted">
+                                        <i class="bi bi-person-x"></i> Not assigned
+                                    </div>
+                                </td>
+                                
+                                <td class="align-middle">
+                                    <div th:if="${sessionItem != null && sessionItem.group != null}">
+                                        <strong th:text="${sessionItem.group.name != null ? sessionItem.group.name : 'Unknown Group'}">Group Name</strong>
+                                        <br>
+                                        <small class="text-muted">
+                                            <span th:text="${sessionItem.group.program != null ? sessionItem.group.program : 'N/A'}">Program</span>
+                                            • <span th:text="${sessionItem.group.level != null ? sessionItem.group.level : 'N/A'}">Level</span>
+                                        </small>
+                                    </div>
+                                    <div th:unless="${sessionItem != null && sessionItem.group != null}" class="text-muted">
+                                        <i class="bi bi-people-fill"></i> Not assigned
+                                    </div>
+                                </td>
+                                
+                                <td class="align-middle">
+                                    <div th:if="${sessionItem != null && sessionItem.room != null}">
+                                        <strong th:text="${sessionItem.room.name != null ? sessionItem.room.name : 'Unknown Room'}">Room Name</strong>
+                                        <br>
+                                        <small class="text-muted">
+                                            <i class="bi bi-people"></i> <span th:text="${sessionItem.room.capacity != null ? sessionItem.room.capacity : 'N/A'}">30</span> seats
+                                            • <span th:text="${sessionItem.room.type != null ? sessionItem.room.type : 'N/A'}">Type</span>
+                                        </small>
+                                    </div>
+                                    <div th:unless="${sessionItem != null && sessionItem.room != null}" class="text-muted">
+                                        <i class="bi bi-door-open"></i> Not assigned
+                                    </div>
+                                </td>
+                                
+                                <td class="align-middle">
+                                    <div th:if="${sessionItem != null && sessionItem.timeslot != null}">
+                                        <strong th:text="${sessionItem.timeslot.dayOfWeek != null ? sessionItem.timeslot.dayOfWeek : 'N/A'}">MONDAY</strong>
+                                        <br>
+                                        <small class="text-muted">
+                                            <i class="bi bi-clock"></i>
+                                            <span th:text="${sessionItem.timeslot.startTime != null ? sessionItem.timeslot.startTime : 'N/A'}">08:00</span>
+                                            -
+                                            <span th:text="${sessionItem.timeslot.endTime != null ? sessionItem.timeslot.endTime : 'N/A'}">10:00</span>
+                                        </small>
+                                    </div>
+                                    <div th:unless="${sessionItem != null && sessionItem.timeslot != null}" class="text-muted">
+                                        <i class="bi bi-calendar-x"></i> Not scheduled
+                                    </div>
+                                </td>
+                                
+                                <td class="align-middle text-center">
+                                    <span th:if="${sessionItem != null && sessionItem.type != null}" 
+                                          th:class="|badge ${ sessionItem.type == 'LECTURE' ? 'bg-primary' : (sessionItem.type == 'TUTORIAL' ? 'bg-success' : (sessionItem.type == 'LAB' ? 'bg-warning text-dark' : 'bg-secondary')) }|"
+                                          th:text="${sessionItem.type}">LECTURE</span>
+                                    <span th:unless="${sessionItem != null && sessionItem.type != null}" class="badge bg-secondary">N/A</span>
+                                </td>
+                                
+                                <td class="align-middle text-center">
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-sm btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">
+                                            <i class="bi bi-gear"></i>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a th:href="@{/admin/sessions/edit/{id}(id=${sessionItem != null && sessionItem.id != null ? sessionItem.id : 0})}" 
+                                                   class="dropdown-item">
+                                                    <i class="bi bi-pencil"></i> Edit Session
+                                                </a>
+                                            </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <a href="#" class="dropdown-item text-danger" 
+                                                   th:onclick="'deleteSession(' + ${sessionItem != null && sessionItem.id != null ? sessionItem.id : 0} + ')'">
+                                                    <i class="bi bi-trash"></i> Delete Session
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="row mt-4" th:if="${sessions != null && !#lists.isEmpty(sessions)}">
+            <div class="col-md-3">
+                <div class="card bg-primary text-white">
+                    <div class="card-body text-center">
+                        <h4 th:text="${sessions != null ? #lists.size(sessions) : 0}">0</h4>
+                        <small>Total Sessions</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-success text-white">
+                    <div class="card-body text-center">
+                        <h4 th:text="${sessions != null ? #lists.size(T(java.util.stream.Collectors).toList(sessions.![#this.teacher != null ? #this : null].stream().filter(#this != null).distinct())) : 0}">0</h4>
+                        <small>Active Teachers</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-warning text-dark">
+                    <div class="card-body text-center">
+                        <h4 th:text="${sessions != null ? #lists.size(T(java.util.stream.Collectors).toList(sessions.![#this.group != null ? #this : null].stream().filter(#this != null).distinct())) : 0}">0</h4>
+                        <small>Active Groups</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-info text-white">
+                    <div class="card-body text-center">
+                        <h4 th:text="${sessions != null ? #lists.size(T(java.util.stream.Collectors).toList(sessions.![#this.room != null ? #this : null].stream().filter(#this != null).distinct())) : 0}">0</h4>
+                        <small>Rooms Used</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-exclamation-triangle text-danger"></i> Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this session?</p>
+                    <p class="text-muted"><small>This action cannot be undone.</small></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <form id="deleteForm" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> Delete Session
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Enhanced Functionality -->
+    <script>
+        function deleteSession(sessionId) {
+            const deleteForm = document.getElementById('deleteForm');
+            deleteForm.action = '/admin/sessions/delete/' + sessionId;
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            deleteModal.show();
+        }
+
+        function filterByType(type) {
+            const rows = document.querySelectorAll('.session-row');
+            rows.forEach(row => {
+                if (type === 'all') {
+                    row.style.display = '';
+                } else {
+                    const typeCell = row.querySelector('td:nth-child(7) .badge');
+                    if (typeCell && typeCell.textContent.trim() === type) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        // Auto-refresh every 5 minutes
+        setTimeout(() => {
+            window.location.reload();
+        }, 300000);
+    </script>
+</body>
+</html>

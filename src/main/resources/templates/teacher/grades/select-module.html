@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::menu}, ~{::content})}">
+<head>
+    <title>Manage Grades</title>
+</head>
+<body>
+    <ul th:fragment="menu" class="nav flex-column">
+        <li class="nav-item"><a class="nav-link" th:href="@{/teacher/dashboard}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/teacher/modules}"><i class="bi bi-book"></i> My Modules</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/teacher/sessions}"><i class="bi bi-calendar3"></i> My Timetable</a></li>
+        <li class="nav-item"><a class="nav-link active" th:href="@{/teacher/grades}"><i class="bi bi-clipboard-check"></i> Manage Grades</a></li>
+    </ul>
+
+    <div th:fragment="content">
+        <h1 class="mb-4">Manage Grades - Select Module</h1>
+
+        <div class="row g-4">
+            <div class="col-md-6" th:each="module : ${modules}">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${module.name}">Module Name</h5>
+                        <p class="card-text">
+                            <small class="text-muted" th:text="${module.program + ' - Semester ' + module.semester}">Info</small>
+                        </p>
+                        <a th:href="@{/teacher/grades/module/{id}(id=${module.id})}" class="btn btn-primary">
+                            <i class="bi bi-clipboard-check"></i> View Students & Grades
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${#lists.isEmpty(modules)}" class="col-12">
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> You are not responsible for any modules yet.
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

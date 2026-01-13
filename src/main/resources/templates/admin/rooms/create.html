@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::menu}, ~{::content})}">
+<head>
+    <title>Create Room</title>
+</head>
+<body>
+    <ul th:fragment="menu" class="nav flex-column">
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/dashboard}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/students}"><i class="bi bi-people"></i> Students</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/teachers}"><i class="bi bi-person-badge"></i> Teachers</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/groups}"><i class="bi bi-collection"></i> Groups</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/modules}"><i class="bi bi-book"></i> Modules</a></li>
+        <li class="nav-item"><a class="nav-link active" th:href="@{/admin/rooms}"><i class="bi bi-door-open"></i> Rooms</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/timeslots}"><i class="bi bi-clock"></i> Timeslots</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/sessions}"><i class="bi bi-calendar3"></i> Sessions</a></li>
+    </ul>
+
+    <div th:fragment="content">
+        <h1 class="mb-4">Create Room</h1>
+        
+        <div class="card">
+            <div class="card-body">
+                <form th:action="@{/admin/rooms/create}" method="post">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Room Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="capacity" class="form-label">Capacity</label>
+                        <input type="number" class="form-control" id="capacity" name="capacity" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="type" class="form-label">Room Type</label>
+                        <select class="form-select" id="type" name="type" required>
+                            <option value="">Select Room Type</option>
+                            <option value="Classroom">Classroom</option>
+                            <option value="Laboratory">Laboratory</option>
+                            <option value="Computer Lab">Computer Lab</option>
+                            <option value="Lecture Hall">Lecture Hall</option>
+                            <option value="Seminar Room">Seminar Room</option>
+                            <option value="Workshop">Workshop</option>
+                            <option value="Conference Room">Conference Room</option>
+                            <option value="Study Room">Study Room</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Room</button>
+                    <a th:href="@{/admin/rooms}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

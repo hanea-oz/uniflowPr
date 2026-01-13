@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::menu}, ~{::content})}">
+<head>
+    <title>Student Dashboard</title>
+</head>
+<body>
+    <ul th:fragment="menu" class="nav flex-column">
+        <li class="nav-item"><a class="nav-link active" th:href="@{/student/dashboard}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/student/sessions}"><i class="bi bi-calendar3"></i> My Timetable</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/student/grades}"><i class="bi bi-clipboard-check"></i> My Grades</a></li>
+    </ul>
+
+    <div th:fragment="content">
+        <h1 class="mb-4">Student Dashboard</h1>
+        
+        <div class="card mb-4">
+            <div class="card-header"><h5>Profile</h5></div>
+            <div class="card-body">
+                <p><strong>Name:</strong> <span th:text="${student.firstName + ' ' + student.lastName}">John Doe</span></p>
+                <p><strong>Email:</strong> <span th:text="${student.user != null ? student.user.email : 'N/A'}">student@example.com</span></p>
+                <p><strong>Program:</strong> <span th:text="${student.program ?: 'N/A'}">Computer Science</span></p>
+                <p><strong>Level:</strong> <span th:text="${student.level ?: 'N/A'}">L3</span></p>
+                <p><strong>Group:</strong> <span th:text="${student.group != null ? student.group.name : 'Not assigned'}">Group A</span></p>
+            </div>
+        </div>
+
+        <div class="card" th:if="${group != null}">
+            <div class="card-header"><h5>Weekly Timetable</h5></div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Day</th>
+                                <th>Time</th>
+                                <th>Module</th>
+                                <th>Type</th>
+                                <th>Room</th>
+                                <th>Teacher</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="session : ${sessions}">
+                                <td th:text="${session.timeslot.dayOfWeek}">MONDAY</td>
+                                <td th:text="${session.timeslot.timeRange}">08:00-10:00</td>
+                                <td th:text="${session.module.name}">Module Name</td>
+                                <td><span class="badge bg-primary" th:text="${session.type}">LECTURE</span></td>
+                                <td th:text="${session.room.name}">A101</td>
+                                <td th:text="${session.teacher.firstName + ' ' + session.teacher.lastName}">Teacher</td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(sessions)}">
+                                <td colspan="6" class="text-center text-muted">No sessions scheduled</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

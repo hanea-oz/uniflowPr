@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::menu}, ~{::content})}">
+<head>
+    <title>Create Student</title>
+</head>
+<body>
+    <ul th:fragment="menu" class="nav flex-column">
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/dashboard}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link active" th:href="@{/admin/students}"><i class="bi bi-people"></i> Students</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/teachers}"><i class="bi bi-person-badge"></i> Teachers</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/groups}"><i class="bi bi-collection"></i> Groups</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/modules}"><i class="bi bi-book"></i> Modules</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/rooms}"><i class="bi bi-door-open"></i> Rooms</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/timeslots}"><i class="bi bi-clock"></i> Timeslots</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/sessions}"><i class="bi bi-calendar3"></i> Sessions</a></li>
+    </ul>
+
+    <div th:fragment="content">
+        <h1 class="mb-4">Create New Student</h1>
+
+        <div class="card">
+            <div class="card-body">
+                <form th:action="@{/admin/students/create}" method="post">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="firstName" class="form-label">First Name *</label>
+                            <input type="text" class="form-control" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="lastName" class="form-label">Last Name *</label>
+                            <input type="text" class="form-control" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label">Email *</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="password" class="form-label">Password *</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="program" class="form-label">Program *</label>
+                            <input type="text" class="form-control" id="program" name="program" placeholder="e.g., Computer Science" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="level" class="form-label">Level *</label>
+                            <input type="text" class="form-control" id="level" name="level" placeholder="e.g., L3, M1" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="groupId" class="form-label">Group</label>
+                            <select class="form-select" id="groupId" name="groupId">
+                                <option value="">-- None --</option>
+                                <option th:each="group : ${groups}" th:value="${group.id}" 
+                                        th:text="${group.name + ' (' + group.program + ' - ' + group.level + ')'}">Group A</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="skills" class="form-label">Skills</label>
+                        <textarea class="form-control" id="skills" name="skills" rows="3"></textarea>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Create Student</button>
+                        <a th:href="@{/admin/students}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

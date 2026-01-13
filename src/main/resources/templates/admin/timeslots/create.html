@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::menu}, ~{::content})}">
+<head>
+    <title>Create Timeslot</title>
+</head>
+<body>
+    <ul th:fragment="menu" class="nav flex-column">
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/dashboard}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/students}"><i class="bi bi-people"></i> Students</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/teachers}"><i class="bi bi-person-badge"></i> Teachers</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/groups}"><i class="bi bi-collection"></i> Groups</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/modules}"><i class="bi bi-book"></i> Modules</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/rooms}"><i class="bi bi-door-open"></i> Rooms</a></li>
+        <li class="nav-item"><a class="nav-link active" th:href="@{/admin/timeslots}"><i class="bi bi-clock"></i> Timeslots</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/sessions}"><i class="bi bi-calendar3"></i> Sessions</a></li>
+    </ul>
+
+    <div th:fragment="content">
+        <h1 class="mb-4">Create Timeslot</h1>
+        
+        <div class="card">
+            <div class="card-body">
+                <form th:action="@{/admin/timeslots/create}" method="post">
+                    <div class="mb-3">
+                        <label for="dayOfWeek" class="form-label">Day of Week</label>
+                        <select class="form-select" id="dayOfWeek" name="dayOfWeek" required>
+                            <option value="MONDAY">Monday</option>
+                            <option value="TUESDAY">Tuesday</option>
+                            <option value="WEDNESDAY">Wednesday</option>
+                            <option value="THURSDAY">Thursday</option>
+                            <option value="FRIDAY">Friday</option>
+                            <option value="SATURDAY">Saturday</option>
+                            <option value="SUNDAY">Sunday</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="startTime" class="form-label">Start Time</label>
+                        <input type="time" class="form-control" id="startTime" name="startTime" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="endTime" class="form-label">End Time</label>
+                        <input type="time" class="form-control" id="endTime" name="endTime" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Timeslot</button>
+                    <a th:href="@{/admin/timeslots}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

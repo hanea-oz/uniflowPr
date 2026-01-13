@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::menu}, ~{::content})}">
+<head>
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <ul th:fragment="menu" class="nav flex-column">
+        <li class="nav-item"><a class="nav-link active" th:href="@{/admin/dashboard}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/students}"><i class="bi bi-people"></i> Students</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/teachers}"><i class="bi bi-person-badge"></i> Teachers</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/groups}"><i class="bi bi-collection"></i> Groups</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/modules}"><i class="bi bi-book"></i> Modules</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/rooms}"><i class="bi bi-door-open"></i> Rooms</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/timeslots}"><i class="bi bi-clock"></i> Timeslots</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/sessions}"><i class="bi bi-calendar3"></i> Sessions</a></li>
+    </ul>
+
+    <div th:fragment="content">
+        <h1 class="mb-4">Admin Dashboard</h1>
+        
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card text-white bg-primary">
+                    <div class="card-body">
+                        <h5 class="card-title">Students</h5>
+                        <h2 class="card-text" th:text="${studentCount}">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-success">
+                    <div class="card-body">
+                        <h5 class="card-title">Teachers</h5>
+                        <h2 class="card-text" th:text="${teacherCount}">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-info">
+                    <div class="card-body">
+                        <h5 class="card-title">Groups</h5>
+                        <h2 class="card-text" th:text="${groupCount}">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-warning">
+                    <div class="card-body">
+                        <h5 class="card-title">Modules</h5>
+                        <h2 class="card-text" th:text="${moduleCount}">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-secondary">
+                    <div class="card-body">
+                        <h5 class="card-title">Sessions</h5>
+                        <h2 class="card-text" th:text="${sessionCount}">0</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-5">
+            <h3>Quick Actions</h3>
+            <div class="list-group">
+                <a th:href="@{/admin/students/create}" class="list-group-item list-group-item-action">
+                    <i class="bi bi-plus-circle"></i> Add New Student
+                </a>
+                <a th:href="@{/admin/teachers/create}" class="list-group-item list-group-item-action">
+                    <i class="bi bi-plus-circle"></i> Add New Teacher
+                </a>
+                <a th:href="@{/admin/modules/create}" class="list-group-item list-group-item-action">
+                    <i class="bi bi-plus-circle"></i> Add New Module
+                </a>
+                <a th:href="@{/admin/sessions/create}" class="list-group-item list-group-item-action">
+                    <i class="bi bi-plus-circle"></i> Create New Session
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::menu}, ~{::content})}">
+<head>
+    <title>Teacher Dashboard</title>
+</head>
+<body>
+    <ul th:fragment="menu" class="nav flex-column">
+        <li class="nav-item"><a class="nav-link active" th:href="@{/teacher/dashboard}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/teacher/modules}"><i class="bi bi-book"></i> My Modules</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/teacher/sessions}"><i class="bi bi-calendar3"></i> My Sessions</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/teacher/grades}"><i class="bi bi-clipboard-check"></i> Manage Grades</a></li>
+    </ul>
+
+    <div th:fragment="content">
+        <h1 class="mb-4">Teacher Dashboard</h1>
+        
+        <!-- Welcome Message -->
+        <div class="alert alert-info mb-4" role="alert">
+            <i class="bi bi-info-circle"></i> Welcome back, <strong th:text="${teacher != null ? (teacher.firstName != null ? teacher.firstName : 'Teacher') : 'Teacher'}">Teacher</strong>!
+        </div>
+        
+        <!-- Profile Card -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="bi bi-person-circle"></i> My Profile</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="mb-2"><strong>Full Name:</strong> 
+                            <span th:text="${teacher != null ? ((teacher.firstName != null ? teacher.firstName : '') + ' ' + (teacher.lastName != null ? teacher.lastName : '')) : 'N/A'}">John Doe</span>
+                        </p>
+                        <p class="mb-2"><strong>Email:</strong> 
+                            <span th:text="${teacher != null && teacher.user != null && teacher.user.email != null ? teacher.user.email : 'N/A'}">teacher@example.com</span>
+                        </p>
+                        <p class="mb-2"><strong>Grade:</strong> 
+                            <span th:text="${teacher != null && teacher.grade != null ? teacher.grade : 'Not specified'}">Professor</span>
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="mb-2"><strong>Specialty:</strong> 
+                            <span th:text="${teacher != null && teacher.specialty != null ? teacher.specialty : 'Not specified'}">Computer Science</span>
+                        </p>
+                        <p class="mb-2"><strong>Weekly Workload:</strong> 
+                            <span th:text="${teacher != null && teacher.workloadHours != null ? teacher.workloadHours : 0}">0</span> hours
+                        </p>
+                        <p class="mb-0"><strong>Skills:</strong> 
+                            <span th:text="${teacher != null && teacher.skills != null ? teacher.skills : 'Not specified'}">Various</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="card bg-success text-white shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="card-title">My Modules</h6>
+                                <h3 class="mb-0" th:text="${modules != null ? #lists.size(modules) : 0}">0</h3>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="bi bi-book fs-2"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-primary text-white shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="card-title">Total Sessions</h6>
+                                <h3 class="mb-0" th:text="${sessions != null ? #lists.size(sessions) : 0}">0</h3>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="bi bi-calendar3 fs-2"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-warning text-dark shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="card-title">Active Groups</h6>
+                                <h3 class="mb-0" th:text="${groups != null ? #lists.size(groups) : 0}">0</h3>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="bi bi-people fs-2"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="row g-4">
+            <!-- My Modules -->
+            <div class="col-lg-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0"><i class="bi bi-book"></i> My Modules</h5>
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${modules != null && !#lists.isEmpty(modules)}">
+                            <div class="list-group list-group-flush">
+                                <div th:each="module : ${modules}" class="list-group-item border-0 px-0">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6 class="mb-1" th:text="${module != null && module.name != null ? module.name : 'Unknown Module'}">Module Name</h6>
+                                            <small class="text-muted">
+                                                <span th:text="${module != null && module.program != null ? module.program : 'Unknown Program'}">Program</span>
+                                                • Semester <span th:text="${module != null && module.semester != null ? module.semester : 'N/A'}">1</span>
+                                                • <span th:text="${module != null && module.volumeHours != null ? module.volumeHours : 0}">0</span>h
+                                            </small>
+                                        </div>
+                                        <span class="badge bg-primary rounded-pill">Active</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div th:if="${modules == null || #lists.isEmpty(modules)}" class="text-center text-muted py-3">
+                            <i class="bi bi-book display-4 text-muted"></i>
+                            <p class="mt-2 mb-0">No modules assigned yet</p>
+                            <small>Contact your administrator for module assignments</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- My Sessions -->
+            <div class="col-lg-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0"><i class="bi bi-calendar3"></i> Upcoming Sessions</h5>
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${sessions != null && !#lists.isEmpty(sessions)}">
+                            <div class="list-group list-group-flush">
+                                <div th:each="sessionItem : ${sessions}" class="list-group-item border-0 px-0">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6 class="mb-1" th:text="${sessionItem != null && sessionItem.module != null && sessionItem.module.name != null ? sessionItem.module.name : 'Unknown Module'}">Module</h6>
+                                            <div class="small text-muted">
+                                                <i class="bi bi-calendar"></i> 
+                                                <span th:text="${sessionItem != null && sessionItem.timeslot != null && sessionItem.timeslot.dayOfWeek != null ? sessionItem.timeslot.dayOfWeek : 'N/A'}">MONDAY</span>
+                                                <span th:text="${sessionItem != null && sessionItem.timeslot != null && sessionItem.timeslot.startTime != null ? sessionItem.timeslot.startTime : 'N/A'}">08:00</span>
+                                                -
+                                                <span th:text="${sessionItem != null && sessionItem.timeslot != null && sessionItem.timeslot.endTime != null ? sessionItem.timeslot.endTime : 'N/A'}">10:00</span>
+                                                <br>
+                                                <i class="bi bi-door-open"></i> 
+                                                Room <span th:text="${sessionItem != null && sessionItem.room != null && sessionItem.room.name != null ? sessionItem.room.name : 'N/A'}">A101</span>
+                                                <br>
+                                                <i class="bi bi-people"></i> 
+                                                Group <span th:text="${sessionItem != null && sessionItem.group != null && sessionItem.group.name != null ? sessionItem.group.name : 'N/A'}">A</span>
+                                            </div>
+                                        </div>
+                                        <span class="badge bg-success rounded-pill" th:text="${sessionItem != null && sessionItem.type != null ? sessionItem.type : 'LECTURE'}">LECTURE</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div th:if="${sessions == null || #lists.isEmpty(sessions)}" class="text-center text-muted py-3">
+                            <i class="bi bi-calendar-x display-4 text-muted"></i>
+                            <p class="mt-2 mb-0">No sessions scheduled</p>
+                            <small>Your timetable will appear here when sessions are assigned</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0"><i class="bi bi-lightning"></i> Quick Actions</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <a th:href="@{/teacher/modules}" class="btn btn-outline-primary w-100">
+                                    <i class="bi bi-book"></i><br>
+                                    <small>View My Modules</small>
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <a th:href="@{/teacher/sessions}" class="btn btn-outline-success w-100">
+                                    <i class="bi bi-calendar3"></i><br>
+                                    <small>View Timetable</small>
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <a th:href="@{/teacher/grades}" class="btn btn-outline-warning w-100">
+                                    <i class="bi bi-clipboard-check"></i><br>
+                                    <small>Manage Grades</small>
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <a th:href="@{/logout}" class="btn btn-outline-secondary w-100">
+                                    <i class="bi bi-box-arrow-right"></i><br>
+                                    <small>Logout</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

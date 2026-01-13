@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::menu}, ~{::content})}">
+<head>
+    <title>Create Session</title>
+</head>
+<body>
+    <ul th:fragment="menu" class="nav flex-column">
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/dashboard}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/students}"><i class="bi bi-people"></i> Students</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/teachers}"><i class="bi bi-person-badge"></i> Teachers</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/groups}"><i class="bi bi-collection"></i> Groups</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/modules}"><i class="bi bi-book"></i> Modules</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/rooms}"><i class="bi bi-door-open"></i> Rooms</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/timeslots}"><i class="bi bi-clock"></i> Timeslots</a></li>
+        <li class="nav-item"><a class="nav-link active" th:href="@{/admin/sessions}"><i class="bi bi-calendar3"></i> Sessions</a></li>
+    </ul>
+
+    <div th:fragment="content">
+        <h1 class="mb-4">Create Session</h1>
+        
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle"></i> <span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        
+        <div class="card">
+            <div class="card-body">
+                <form th:action="@{/admin/sessions/create}" method="post">
+                    <div class="mb-3">
+                        <label for="type" class="form-label">Session Type</label>
+                        <select class="form-select" id="type" name="type" required>
+                            <option value="">Select Session Type</option>
+                            <option th:each="sessionType : ${sessionTypes}" th:value="${sessionType}" 
+                                    th:text="${sessionType}">Type</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="moduleId" class="form-label">Module</label>
+                        <select class="form-select" id="moduleId" name="moduleId" required>
+                            <option value="">Select Module</option>
+                            <option th:each="module : ${modules}" th:value="${module.id}" th:text="${module.name}">Module</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="teacherId" class="form-label">Teacher</label>
+                        <select class="form-select" id="teacherId" name="teacherId" required>
+                            <option value="">Select Teacher</option>
+                            <option th:each="teacher : ${teachers}" th:value="${teacher.id}" 
+                                    th:text="${teacher.firstName + ' ' + teacher.lastName}">Teacher</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="groupId" class="form-label">Group</label>
+                        <select class="form-select" id="groupId" name="groupId" required>
+                            <option value="">Select Group</option>
+                            <option th:each="group : ${groups}" th:value="${group.id}" th:text="${group.name}">Group</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="roomId" class="form-label">Room</label>
+                        <select class="form-select" id="roomId" name="roomId" required>
+                            <option value="">Select Room</option>
+                            <option th:each="room : ${rooms}" th:value="${room.id}" th:text="${room.name}">Room</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="timeslotId" class="form-label">Timeslot</label>
+                        <select class="form-select" id="timeslotId" name="timeslotId" required>
+                            <option value="">Select Timeslot</option>
+                            <option th:each="timeslot : ${timeslots}" th:value="${timeslot.id}" 
+                                    th:text="${timeslot.dayOfWeek + ' ' + timeslot.startTime + '-' + timeslot.endTime}">Timeslot</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Session</button>
+                    <a th:href="@{/admin/sessions}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

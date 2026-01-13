@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::menu}, ~{::content})}">
+<head>
+    <title>Create Group</title>
+</head>
+<body>
+    <ul th:fragment="menu" class="nav flex-column">
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/dashboard}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/students}"><i class="bi bi-people"></i> Students</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/teachers}"><i class="bi bi-person-badge"></i> Teachers</a></li>
+        <li class="nav-item"><a class="nav-link active" th:href="@{/admin/groups}"><i class="bi bi-collection"></i> Groups</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/modules}"><i class="bi bi-book"></i> Modules</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/rooms}"><i class="bi bi-door-open"></i> Rooms</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/timeslots}"><i class="bi bi-clock"></i> Timeslots</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/sessions}"><i class="bi bi-calendar3"></i> Sessions</a></li>
+    </ul>
+
+    <div th:fragment="content">
+        <h1 class="mb-4">Create Group</h1>
+        
+        <div class="card">
+            <div class="card-body">
+                <form th:action="@{/admin/groups/create}" method="post">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Group Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="program" class="form-label">Program</label>
+                        <select class="form-select" id="program" name="program" required>
+                            <option value="">Select Program</option>
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="Information Technology">Information Technology</option>
+                            <option value="Software Engineering">Software Engineering</option>
+                            <option value="Data Science">Data Science</option>
+                            <option value="Cybersecurity">Cybersecurity</option>
+                            <option value="Business Administration">Business Administration</option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Mathematics">Mathematics</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="level" class="form-label">Level</label>
+                        <select class="form-select" id="level" name="level" required>
+                            <option value="">Select Level</option>
+                            <option value="Year 1">Year 1</option>
+                            <option value="Year 2">Year 2</option>
+                            <option value="Year 3">Year 3</option>
+                            <option value="Year 4">Year 4</option>
+                            <option value="Master 1">Master 1</option>
+                            <option value="Master 2">Master 2</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Group</button>
+                    <a th:href="@{/admin/groups}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
